@@ -179,6 +179,60 @@
     .aspect { color: var(--gold); }
     .important { color: var(--blue); font-weight: 700; }
     .unknown { color: var(--danger); }
+    .ga {
+      list-style: none;
+      margin-left: -18px;
+      padding: 8px 10px;
+      border: 1px solid rgba(217,155,53,.42);
+      border-radius: 10px;
+      background: linear-gradient(90deg, rgba(217,155,53,.18), rgba(217,155,53,.04));
+      color: #ffd98a;
+      font-weight: 800;
+    }
+    .ga::before {
+      content: "★ Greater Affix";
+      display: inline-block;
+      margin-right: 8px;
+      color: var(--gold);
+      font-size: .74rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .link-card {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .arrow {
+      color: var(--gold);
+      font-size: 1.5rem;
+      font-weight: 900;
+      opacity: .85;
+    }
+
+    .mini-panel {
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(0,0,0,.18);
+    }
+
+    .mini-label {
+      color: var(--muted);
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 4px;
+    }
+
+    .mini-name {
+      color: var(--gold);
+      font-size: 1.05rem;
+      font-weight: 850;
+    }
     .note { color: var(--muted); line-height: 1.5; }
 
     .two-col {
@@ -328,6 +382,7 @@
           <p class="note">For other builds, duplicate this HTML file and replace the JSON data below. The UI updates automatically from the data arrays.</p>
           <ul>
             <li>Add gear as objects with <strong>slot</strong>, <strong>name</strong>, <strong>type</strong>, <strong>stats</strong>, and <strong>aspect</strong>.</li>
+            <li>Mark Greater Affixes with <code>{ text: "Stat name", ga: true }</code> so the UI highlights them automatically.</li>
             <li>Use <strong>unknown</strong> fields instead of guessing.</li>
             <li>Keep screenshots in a folder and add image paths later if desired.</li>
             <li>Use the checklist tab to make the guide actionable for farming and upgrades.</li>
@@ -432,15 +487,41 @@
         }
       ],
       paragon: [
-        { kind: "Legendary Glyph", name: "Challenger", level: 144 },
-        { kind: "Legendary Glyph", name: "Twister", level: 144 },
-        { kind: "Legendary Glyph", name: "Wrath", level: 142 },
-        { kind: "Legendary Glyph", name: "Dominate", level: 142 },
-        { kind: "Legendary Glyph", name: "Might", level: 142 },
-        { kind: "Legendary Node", name: "Blood Rage" },
-        { kind: "Legendary Node", name: "Warbringer" },
-        { kind: "Legendary Node", name: "Force of Nature" },
-        { kind: "Legendary Node", name: "Carnage" }
+        {
+          node: "Starting Board",
+          glyph: "Challenger",
+          glyphLevel: 144,
+          confirmed: true,
+          note: "User-confirmed: Challenger is paired with the starting board."
+        },
+        {
+          node: "Blood Rage",
+          glyph: "Twister",
+          glyphLevel: 144,
+          confirmed: true,
+          note: "User-confirmed: Blood Rage is paired with Twister."
+        },
+        {
+          node: "Warbringer",
+          glyph: "Wrath",
+          glyphLevel: 142,
+          confirmed: true,
+          note: "User-confirmed: Warbringer is paired with Wrath."
+        },
+        {
+          node: "Force of Nature",
+          glyph: "Dominate",
+          glyphLevel: 142,
+          confirmed: true,
+          note: "User-confirmed: Force of Nature is paired with Dominate."
+        },
+        {
+          node: "Carnage",
+          glyph: "Might",
+          glyphLevel: 142,
+          confirmed: true,
+          note: "User-confirmed: Carnage is paired with Might."
+        }
       ],
       charms: [
         {
@@ -503,7 +584,10 @@
             </div>
           </div>
           <div class="badge-row">${meta.map(m => `<span class="badge">${m}</span>`).join('')}</div>
-          <ul>${(item.stats || []).map(s => `<li>${s}</li>`).join('')}</ul>
+          <ul>${(item.stats || []).map(s => {
+            const stat = typeof s === 'string' ? { text: s, ga: false } : s;
+            return `<li class="${stat.ga ? 'ga' : ''}">${stat.text}</li>`;
+          }).join('')}</ul>
           ${item.aspect ? `<p class="aspect"><strong>Power:</strong> ${item.aspect}</p>` : ''}
           ${item.effect ? `<p class="aspect"><strong>Effect:</strong> ${item.effect}</p>` : ''}
           ${item.bonus ? `<p class="note"><strong>Extra:</strong> ${item.bonus}</p>` : ''}
@@ -522,9 +606,20 @@
     function renderParagon() {
       document.getElementById('paragonGrid').innerHTML = build.paragon.map(p => `
         <article class="card searchable">
-          <div class="slot">${p.kind}</div>
-          <div class="name">${p.name}</div>
-          ${p.level ? `<div class="badge-row"><span class="badge">Level ${p.level}</span></div>` : ''}
+          <div class="link-card">
+            <div class="mini-panel">
+              <div class="mini-label">Legendary Node</div>
+              <div class="mini-name">${p.node}</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="mini-panel">
+              <div class="mini-label">Associated Glyph</div>
+              <div class="mini-name">${p.glyph}</div>
+              ${p.glyphLevel ? `<div class="badge-row"><span class="badge">Level ${p.glyphLevel}</span></div>` : ''}
+            </div>
+          </div>
+          <div class="badge-row"><span class="badge">${p.confirmed ? 'Confirmed pairing' : 'Needs confirmation'}</span></div>
+          <p class="note">${p.note || ''}</p>
         </article>`).join('');
     }
 
@@ -540,8 +635,9 @@
         ["Main Stat Priority", "Strength, Critical Strike Chance, Critical Strike Damage, Physical Damage Multiplier, Damage Per Overpower Stack"],
         ["Defense Priority", "Resolve Stacks, Damage Reduction while Berserking, Selig resource mitigation, Resistance coverage, Armor"],
         ["Resource Priority", "Maximum Resource, Fury Regeneration, Resource Generation, Resource Cost Reduction, Primary Resource Restore"],
-        ["Paragon Glyphs", "Challenger 144, Twister 144, Wrath 142, Dominate 142, Might 142"],
-        ["Paragon Nodes", "Blood Rage, Warbringer, Force of Nature, Carnage"],
+        ["Paragon Pairings", "Starting Board → Challenger, Blood Rage → Twister, Warbringer → Wrath, Force of Nature → Dominate, Carnage → Might"],
+        ["Visible Glyphs", "Challenger 144, Twister 144, Wrath 142, Dominate 142, Might 142"],
+        ["Visible Legendary Nodes", "Starting Board, Blood Rage, Warbringer, Force of Nature, Carnage"],
         ["Charm Package", "Banished Lord's Talisman, Focused Horadric Seal of the Rugged, Berserker's Crucible charms"],
         ["Unknowns", "Full skill tree, passives, runes, mercenary, masterwork targets, tempering manuals, consumables"]
       ];
@@ -553,8 +649,8 @@
     function renderTemplate() {
       const template = {
         title: "Your Build Name",
-        gear: [{ slot: "Helm", rarity: "legendary | unique | mythic | set", name: "Item Name", type: "Item Type", stats: ["Stat 1"], aspect: "Power text" }],
-        paragon: [{ kind: "Legendary Glyph", name: "Glyph Name", level: 100 }],
+        gear: [{ slot: "Helm", rarity: "legendary | unique | mythic | set", name: "Item Name", type: "Item Type", stats: ["Normal Stat", { text: "Greater Affix Stat", ga: true }], aspect: "Power text" }],
+        paragon: [{ node: "Legendary Node Name", glyph: "Glyph Name", glyphLevel: 100, confirmed: true, note: "Optional pairing notes" }],
         charms: [{ rarity: "unique", name: "Charm Name", type: "Charm Type", stats: ["Stat 1"], effect: "Effect text" }],
         unknowns: ["Anything not visible in screenshots"]
       };
