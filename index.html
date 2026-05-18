@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diablo 4 Build Guide</title>
+  <style>
+    :root {
+      --bg: #0d0b0a;
+      --panel: #17120f;
+      --panel-2: #211812;
+      --border: #5c3a1f;
+      --gold: #d99b35;
+      --orange: #ff8a1f;
+      --purple: #d49aff;
+      --green: #65f05a;
+      --blue: #8c94ff;
+      --muted: #b4aaa0;
+      --text: #f4e8d4;
+      --danger: #e85b4f;
+      --shadow: rgba(0,0,0,.45);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(153, 79, 31, .18), transparent 36rem),
+        linear-gradient(180deg, #120d0a, var(--bg));
+      color: var(--text);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(13, 11, 10, .88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(217, 155, 53, .28);
+    }
+
+    .topbar {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    h1, h2, h3 { margin: 0; }
+    h1 {
+      font-size: clamp(1.5rem, 4vw, 2.6rem);
+      letter-spacing: .02em;
+      color: var(--gold);
+    }
+
+    .subtitle { color: var(--muted); margin-top: 6px; }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    input, select, button, textarea {
+      border: 1px solid rgba(217,155,53,.35);
+      background: #120f0d;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      background: linear-gradient(180deg, #392417, #1a120d);
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    button:hover { border-color: var(--gold); }
+
+    main {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 22px 20px 60px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .tab {
+      white-space: nowrap;
+      opacity: .78;
+    }
+
+    .tab.active {
+      opacity: 1;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 1px rgba(217,155,53,.25) inset;
+    }
+
+    .section { display: none; }
+    .section.active { display: block; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(43, 29, 19, .92), rgba(20, 15, 12, .96));
+      border: 1px solid rgba(217,155,53,.26);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 14px 34px var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-top: 2px solid rgba(217,155,53,.28);
+      pointer-events: none;
+    }
+
+    .card.mythic { border-color: rgba(212,154,255,.48); }
+    .card.set { border-color: rgba(101,240,90,.45); }
+
+    .item-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .slot {
+      color: var(--muted);
+      font-size: .85rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .name {
+      color: var(--orange);
+      font-size: 1.18rem;
+      font-weight: 850;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+
+    .mythic .name { color: var(--purple); }
+    .set .name { color: var(--green); }
+
+    .badge-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0; }
+    .badge {
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: .78rem;
+      color: var(--muted);
+      background: rgba(0,0,0,.22);
+    }
+
+    ul { margin: 10px 0 0; padding-left: 18px; }
+    li { margin: 7px 0; line-height: 1.35; }
+    .aspect { color: var(--gold); }
+    .important { color: var(--blue); font-weight: 700; }
+    .unknown { color: var(--danger); }
+    .note { color: var(--muted); line-height: 1.5; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+      gap: 16px;
+    }
+
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(0,0,0,.18);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    th, td {
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 11px 12px;
+      vertical-align: top;
+    }
+    th { color: var(--gold); font-size: .86rem; text-transform: uppercase; letter-spacing: .06em; }
+    tr:last-child td { border-bottom: 0; }
+
+    .builder {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 280px;
+      resize: vertical;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .88rem;
+    }
+
+    .footer-note {
+      margin-top: 30px;
+      color: var(--muted);
+      font-size: .9rem;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .topbar, .two-col, .builder { grid-template-columns: 1fr; }
+      .controls { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div>
+        <h1 id="buildTitle">Berserking Resolve Whirlwind Barbarian</h1>
+        <p class="subtitle">Screenshot-based Diablo 4 build guide. Unknown fields are intentionally marked instead of guessed.</p>
+      </div>
+      <div class="controls">
+        <input id="search" placeholder="Search gear, stats, glyphs..." />
+        <select id="slotFilter">
+          <option value="all">All slots</option>
+        </select>
+        <button onclick="window.print()">Print / Save PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav class="tabs" id="tabs"></nav>
+
+    <section class="section active" data-section="overview">
+      <div class="two-col">
+        <div class="card">
+          <h2>Build Summary</h2>
+          <p class="note">This guide is based only on the provided screenshots. It is designed to be reusable for other builds by editing the build data object near the bottom of this HTML file.</p>
+          <div class="badge-row">
+            <span class="badge">Class: Barbarian</span>
+            <span class="badge">Archetype: Whirlwind / Channeling</span>
+            <span class="badge">Theme: Berserking</span>
+            <span class="badge">Scaling: Resolve / Overpower / Crit</span>
+          </div>
+          <h3>Primary Engines</h3>
+          <ul>
+            <li><span class="important">Berserking uptime</span> powers damage, damage reduction, and set bonuses.</li>
+            <li><span class="important">Resolve stacking</span> appears across helm, chest, pants, boots, amulet, and aspects.</li>
+            <li><span class="important">Overpower stacks</span> are supported by Banished Lord's Talisman and several item affixes.</li>
+            <li><span class="important">Ramaladni's Magnum Opus</span> converts Fury into damage scaling.</li>
+            <li><span class="important">Melted Heart of Selig</span> redirects damage into primary resource for survivability.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Missing / Not Provided</h2>
+          <ul>
+            <li class="unknown">Full skill tree ranks and passives</li>
+            <li class="unknown">Exact mercenary setup</li>
+            <li class="unknown">Runes / runewords</li>
+            <li class="unknown">Full stat sheet</li>
+            <li class="unknown">Gameplay rotation</li>
+            <li class="unknown">Masterwork crit priority</li>
+            <li class="unknown">Tempering manuals</li>
+            <li class="unknown">Elixirs, incense, potion setup</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-section="gear">
+      <div class="grid" id="gearGrid"></div>
+    </section>
+
+    <section class="section" data-section="paragon">
+      <div class="grid" id="paragonGrid"></div>
+    </section>
+
+    <section class="section" data-section="charms">
+      <div class="grid" id="charmGrid"></div>
+    </section>
+
+    <section class="section" data-section="skills">
+      <div class="card">
+        <h2>Visible Skill Bar</h2>
+        <p class="note">The screenshots show the active skill bar icons, but not enough detail to safely identify every exact skill, rank, modifier, or passive. This section is intentionally conservative.</p>
+        <ul>
+          <li>Whirlwind or channeling skill appears central due to Gohr's Devastating Grips and channeling aspect.</li>
+          <li>War Cry / shout effects are present through gear and charm bonuses.</li>
+          <li class="unknown">Exact active skill names: not fully confirmed from screenshots.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" data-section="checklist">
+      <div class="card">
+        <h2>Replication Checklist</h2>
+        <div class="table-wrap">
+          <table id="checklistTable"></table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-section="builder">
+      <div class="builder">
+        <div class="card">
+          <h2>Make This Tool Reusable</h2>
+          <p class="note">For other builds, duplicate this HTML file and replace the JSON data below. The UI updates automatically from the data arrays.</p>
+          <ul>
+            <li>Add gear as objects with <strong>slot</strong>, <strong>name</strong>, <strong>type</strong>, <strong>stats</strong>, and <strong>aspect</strong>.</li>
+            <li>Use <strong>unknown</strong> fields instead of guessing.</li>
+            <li>Keep screenshots in a folder and add image paths later if desired.</li>
+            <li>Use the checklist tab to make the guide actionable for farming and upgrades.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Reusable Data Template</h2>
+          <textarea readonly id="templateBox"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">Built as a local, editable HTML guide. No external libraries required.</p>
+  </main>
+
+  <script>
+    const build = {
+      title: "Berserking Resolve Whirlwind Barbarian",
+      tabs: [
+        ["overview", "Overview"],
+        ["gear", "Gear"],
+        ["paragon", "Paragon"],
+        ["charms", "Talismans / Charms"],
+        ["skills", "Skills"],
+        ["checklist", "Checklist"],
+        ["builder", "Reusable Template"]
+      ],
+      gear: [
+        {
+          slot: "Helm", rarity: "mythic", name: "Heir of Perdition", type: "Ancestral Mythic Unique Helm",
+          power: "900 Item Power", quality: "25 (+25)", armor: "2,004 Armor",
+          stats: ["+21.0% Critical Strike Chance", "+25.0% Lucky Hit Chance", "+25% Movement Speed", "+3 to Core Skills", "10.5% Physical Damage", "+7 Maximum Resolve Stacks", "+150 Strength gem", "+150 Strength gem"],
+          aspect: "Succumb to hatred and earn Mother's Favor, increasing damage dealt by 80%. Slaughter enemies to briefly steal Mother's Favor from surrounding allies."
+        },
+        {
+          slot: "Chest", rarity: "legendary", name: "Thalassic Cuirass of Glynn's Anvil", type: "Ancestral Legendary Chest Armor",
+          power: "900 Item Power", quality: "37 (+25)", armor: "3,506 Armor",
+          stats: ["+163 Strength", "+42 Maximum Resource", "+531 Resistance to All Elements", "+3 to Defensive Skills", "+210 Strength", "+12 Item Quality", "+8 Maximum Resolve Stacks"],
+          aspect: "Your maximum Resolve is increased by 2 and you gain 4% Damage Reduction per Resolve.",
+          bonus: "CirOhm: Lethargic Call to Arms — Cast 5 skills then become exhausted for 3 seconds. Invoke Barbarian's War Cry skill."
+        },
+        {
+          slot: "Two-Handed Bludgeoning", rarity: "legendary", name: "Tidal Nettle Mace", type: "Ancestral Legendary Two-Handed Mace",
+          power: "900 Item Power", quality: "25 (+25)", damage: "4,745 DPS",
+          stats: ["+667 Weapon Damage", "+435 Strength", "x75% Critical Strike Damage Multiplier", "x25% Physical Damage Multiplier", "220.0% Gem Strength in this Item", "+7.5% Critical Strike Chance", "x102% Physical Damage Multiplier gem", "x102% Physical Damage Multiplier gem"],
+          aspect: "Your Maximum Overpower is increased by 8 while you are Fortified."
+        },
+        {
+          slot: "Two-Handed Slashing", rarity: "legendary", name: "Demonblade of Limitless Rage", type: "Ancestral Legendary Two-Handed Sword",
+          power: "900 Item Power", quality: "55 (+25)", damage: "4,145 DPS",
+          stats: ["+468 Strength", "x115% Critical Strike Damage Multiplier", "x31% Physical Damage Multiplier", "Lucky Hit: Restore +12 Primary Resource", "303.8% Gem Strength in this Item", "+30 Item Quality", "+9.0% Critical Strike Chance", "x129% Physical Damage Multiplier gem", "x129% Physical Damage Multiplier gem"],
+          aspect: "Each point of Fury you generate increases your damage by 3.00%. This bonus is lost after 4 seconds."
+        },
+        {
+          slot: "One-Hand Sword", rarity: "unique", name: "Ramaladni's Magnum Opus", type: "Ancestral Unique Sword",
+          power: "900 Item Power", quality: "25 (+25)", damage: "2,330 DPS",
+          stats: ["+235 Weapon Damage", "+214 Strength", "+375 Life on Kill", "x44% Critical Strike Damage Multiplier", "+5.0% Critical Strike Chance", "+15.0% Damage Per Overpower Stack", "x32% Physical Damage Multiplier gem"],
+          aspect: "Skills deal 0.50% increased damage per point of Fury you have, but 10 Fury drains per second."
+        },
+        {
+          slot: "One-Hand Mace", rarity: "legendary", name: "Askari Mace of Channeling", type: "Ancestral Legendary Mace",
+          power: "900 Item Power", quality: "25 (+25)", damage: "2,072 DPS",
+          stats: ["+270 Strength", "+750 Life On Hit", "x11% All Damage Multiplier", "x50% Critical Strike Damage Multiplier", "101.3% Gem Strength in this Item", "+15.0% Damage Per Overpower Stack", "x64% Physical Damage Multiplier gem"],
+          aspect: "While channeling a Skill, all damage is increased by 70%."
+        },
+        {
+          slot: "Gloves", rarity: "unique", name: "Gohr's Devastating Grips", type: "Ancestral Unique Gloves",
+          power: "900 Item Power", quality: "25 (+25)", armor: "1,001 Armor",
+          stats: ["+216 Strength", "x30% All Damage Multiplier", "x47% Vulnerable Damage Multiplier", "x54% Critical Strike Damage Multiplier", "+15.0% Damage Per Overpower Stack"],
+          aspect: "Whirlwind deals 90% increased damage and pulls enemies to you every 2 seconds."
+        },
+        {
+          slot: "Pants", rarity: "unique", name: "Tibault's Will", type: "Ancestral Unique Pants",
+          power: "900 Item Power", quality: "25 (+25)", armor: "2,505 Armor",
+          stats: ["+130 Strength", "+6 Fury Regeneration", "+3,675 Armor", "+713 Cold Resistance", "+12.3% Resistance to All Elements", "+12 Maximum Resolve Stacks"],
+          aspect: "You deal 20% increased damage and gain 50 Primary Resource Regeneration while Unstoppable and for 5 seconds after.",
+          bonus: "IgniCeh: Bomber Alpha Canid — stores Offering and summons a Spirit Wolf Companion."
+        },
+        {
+          slot: "Boots", rarity: "legendary", name: "Runic Cleats of Dominance", type: "Ancestral Legendary Boots",
+          power: "900 Item Power", quality: "25 (+25)", armor: "1,001 Armor",
+          stats: ["+182 Strength", "+6 Fury Regeneration", "+945 Physical Resistance", "+6 to War Cry", "+38% Movement Speed"],
+          aspect: "Crowd Controlling an enemy grants 2 Resolve."
+        },
+        {
+          slot: "Ring", rarity: "mythic", name: "Ring of Starless Skies", type: "Ancestral Mythic Unique Ring",
+          power: "900 Item Power", quality: "25 (+25)", resist: "216 All Resist",
+          stats: ["+22.5% Attack Speed", "+21.0% Critical Strike Chance", "+15.6% Lucky Hit Chance", "+3 to Core Skills", "+4 to All Skills", "+15.0% Damage Per Overpower Stack", "+3,500 Fire Resistance gem"],
+          aspect: "Spending your Primary Resource reduces Resource cost and increases damage by 10% for 3 seconds, up to 50%."
+        },
+        {
+          slot: "Ring", rarity: "legendary", name: "Crushing Circle", type: "Ancestral Legendary Ring",
+          power: "900 Item Power", quality: "25 (+25)", resist: "216 All Resist",
+          stats: ["x15% All Damage Multiplier", "+7.5% Critical Strike Chance", "x31% Critical Strike Damage Multiplier", "x28% Vulnerable Damage Multiplier", "9.0% Cooldown Reduction", "+4,375 Physical Resistance gem"],
+          aspect: "While Fortified, you deal 65% increased damage."
+        },
+        {
+          slot: "Amulet", rarity: "mythic", name: "Melted Heart of Selig", type: "Ancestral Mythic Unique Amulet",
+          power: "900 Item Power", quality: "25 (+25)", resist: "288 All Resist",
+          stats: ["+21.0% All Stats", "+18.8% Lucky Hit Chance", "+31% Movement Speed", "25.0% Resource Generation", "+107 All Stats", "+7 Maximum Resolve Stacks", "+3,500 Lightning Resistance gem"],
+          aspect: "Damage is dealt to your Primary Resource before Life and damage taken this way is drastically reduced. Primary Resource is doubled but Maximum Life is reduced by 75%. While above 50 Primary Resource, deal 29.3% increased damage and gain Berserking, but lose 3 Primary Resource Regeneration."
+        }
+      ],
+      paragon: [
+        { kind: "Legendary Glyph", name: "Challenger", level: 144 },
+        { kind: "Legendary Glyph", name: "Twister", level: 144 },
+        { kind: "Legendary Glyph", name: "Wrath", level: 142 },
+        { kind: "Legendary Glyph", name: "Dominate", level: 142 },
+        { kind: "Legendary Glyph", name: "Might", level: 142 },
+        { kind: "Legendary Node", name: "Blood Rage" },
+        { kind: "Legendary Node", name: "Warbringer" },
+        { kind: "Legendary Node", name: "Force of Nature" },
+        { kind: "Legendary Node", name: "Carnage" }
+      ],
+      charms: [
+        {
+          rarity: "unique", name: "Banished Lord's Talisman", type: "Unique Charm",
+          stats: ["+8.1% Crafting Material Drop Rate", "+15 Maximum Resource"],
+          effect: "After spending 275 Primary Resource, gain 4 stacks of Overpower. Critical Strikes deal 12% increased damage per stack of Overpower."
+        },
+        {
+          rarity: "legendary", name: "Focused Horadric Seal of the Rugged", type: "Legendary Horadric Seal",
+          stats: ["Unlocks 6 Charm Slots", "22.0% Critical Strike Damage", "Berserker's Crucible: +10% Damage Reduction while Berserking", "+1 Charm Slot"],
+          effect: "Supports the Berserker's Crucible set and increases charm slot capacity."
+        },
+        {
+          rarity: "set", name: "Fer of the Crucible", type: "Ancestral Set Charm",
+          stats: ["+787 Lightning Resistance", "+25 Maximum Resource"],
+          effect: "Berserker's Crucible 5/5 set: Berserking damage bonus, cast speed, damage reduction, Fury cost reduction, Fury per second, cooldown reduction, random shout trigger, and elite damage bonuses."
+        }
+      ]
+    };
+
+    const tabs = document.getElementById('tabs');
+    const search = document.getElementById('search');
+    const slotFilter = document.getElementById('slotFilter');
+
+    document.getElementById('buildTitle').textContent = build.title;
+
+    build.tabs.forEach(([id, label], i) => {
+      const btn = document.createElement('button');
+      btn.className = 'tab' + (i === 0 ? ' active' : '');
+      btn.textContent = label;
+      btn.onclick = () => activateTab(id, btn);
+      tabs.appendChild(btn);
+    });
+
+    [...new Set(build.gear.map(g => g.slot))].forEach(slot => {
+      const opt = document.createElement('option');
+      opt.value = slot;
+      opt.textContent = slot;
+      slotFilter.appendChild(opt);
+    });
+
+    function activateTab(id, btn) {
+      document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.dataset.section === id));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function cardClass(rarity) {
+      return `card ${rarity === 'mythic' ? 'mythic' : rarity === 'set' ? 'set' : ''}`;
+    }
+
+    function renderItem(item) {
+      const meta = [item.type, item.power, item.quality ? `Quality ${item.quality}` : '', item.armor, item.damage, item.resist].filter(Boolean);
+      return `
+        <article class="${cardClass(item.rarity)} searchable" data-slot="${item.slot || ''}">
+          <div class="item-head">
+            <div>
+              <div class="slot">${item.slot || item.type}</div>
+              <div class="name">${item.name}</div>
+            </div>
+          </div>
+          <div class="badge-row">${meta.map(m => `<span class="badge">${m}</span>`).join('')}</div>
+          <ul>${(item.stats || []).map(s => `<li>${s}</li>`).join('')}</ul>
+          ${item.aspect ? `<p class="aspect"><strong>Power:</strong> ${item.aspect}</p>` : ''}
+          ${item.effect ? `<p class="aspect"><strong>Effect:</strong> ${item.effect}</p>` : ''}
+          ${item.bonus ? `<p class="note"><strong>Extra:</strong> ${item.bonus}</p>` : ''}
+        </article>`;
+    }
+
+    function renderGear() {
+      const q = search.value.toLowerCase();
+      const slot = slotFilter.value;
+      document.getElementById('gearGrid').innerHTML = build.gear
+        .filter(item => slot === 'all' || item.slot === slot)
+        .filter(item => JSON.stringify(item).toLowerCase().includes(q))
+        .map(renderItem).join('');
+    }
+
+    function renderParagon() {
+      document.getElementById('paragonGrid').innerHTML = build.paragon.map(p => `
+        <article class="card searchable">
+          <div class="slot">${p.kind}</div>
+          <div class="name">${p.name}</div>
+          ${p.level ? `<div class="badge-row"><span class="badge">Level ${p.level}</span></div>` : ''}
+        </article>`).join('');
+    }
+
+    function renderCharms() {
+      document.getElementById('charmGrid').innerHTML = build.charms.map(renderItem).join('');
+    }
+
+    function renderChecklist() {
+      const rows = [
+        ["Must-have Mythics", "Heir of Perdition, Ring of Starless Skies, Melted Heart of Selig"],
+        ["Must-have Uniques", "Ramaladni's Magnum Opus, Gohr's Devastating Grips, Tibault's Will"],
+        ["Key Legendary Aspects", "Channeling damage, Fortified damage, Resolve scaling, Overpower while Fortified, Fury-generated damage, Resolve from crowd control"],
+        ["Main Stat Priority", "Strength, Critical Strike Chance, Critical Strike Damage, Physical Damage Multiplier, Damage Per Overpower Stack"],
+        ["Defense Priority", "Resolve Stacks, Damage Reduction while Berserking, Selig resource mitigation, Resistance coverage, Armor"],
+        ["Resource Priority", "Maximum Resource, Fury Regeneration, Resource Generation, Resource Cost Reduction, Primary Resource Restore"],
+        ["Paragon Glyphs", "Challenger 144, Twister 144, Wrath 142, Dominate 142, Might 142"],
+        ["Paragon Nodes", "Blood Rage, Warbringer, Force of Nature, Carnage"],
+        ["Charm Package", "Banished Lord's Talisman, Focused Horadric Seal of the Rugged, Berserker's Crucible charms"],
+        ["Unknowns", "Full skill tree, passives, runes, mercenary, masterwork targets, tempering manuals, consumables"]
+      ];
+      document.getElementById('checklistTable').innerHTML = `
+        <thead><tr><th>Category</th><th>Target</th></tr></thead>
+        <tbody>${rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody>`;
+    }
+
+    function renderTemplate() {
+      const template = {
+        title: "Your Build Name",
+        gear: [{ slot: "Helm", rarity: "legendary | unique | mythic | set", name: "Item Name", type: "Item Type", stats: ["Stat 1"], aspect: "Power text" }],
+        paragon: [{ kind: "Legendary Glyph", name: "Glyph Name", level: 100 }],
+        charms: [{ rarity: "unique", name: "Charm Name", type: "Charm Type", stats: ["Stat 1"], effect: "Effect text" }],
+        unknowns: ["Anything not visible in screenshots"]
+      };
+      document.getElementById('templateBox').value = JSON.stringify(template, null, 2);
+    }
+
+    search.addEventListener('input', renderGear);
+    slotFilter.addEventListener('change', renderGear);
+
+    renderGear();
+    renderParagon();
+    renderCharms();
+    renderChecklist();
+    renderTemplate();
+  </script>
+</body>
+</html>
