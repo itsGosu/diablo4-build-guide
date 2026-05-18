@@ -234,16 +234,31 @@
     .aspect { color: var(--gold); }
     .important { color: var(--blue); font-weight: 700; }
     .unknown { color: var(--danger); }
-    .ga {
+    .ga, .tf {
       list-style: none;
       margin-left: -18px;
       padding: 8px 10px;
-      border: 1px solid rgba(217,155,53,.42);
       border-radius: 10px;
-      background: linear-gradient(90deg, rgba(217,155,53,.18), rgba(217,155,53,.04));
-      color: #ffd98a;
       font-weight: 800;
     }
+
+    .ga {
+      border: 1px solid rgba(217,155,53,.42);
+      background: linear-gradient(90deg, rgba(217,155,53,.18), rgba(217,155,53,.04));
+      color: #ffd98a;
+    }
+
+    .tf {
+      border: 1px solid rgba(212,154,255,.42);
+      background: linear-gradient(90deg, rgba(212,154,255,.18), rgba(212,154,255,.04));
+      color: #efc9ff;
+    }
+
+    .ga.tf {
+      border-color: rgba(255,218,138,.62);
+      background: linear-gradient(90deg, rgba(217,155,53,.24), rgba(212,154,255,.16));
+    }
+
     .ga::before {
       content: "★ Greater Affix";
       display: inline-block;
@@ -252,6 +267,39 @@
       font-size: .74rem;
       text-transform: uppercase;
       letter-spacing: .05em;
+    }
+
+    .tf::after {
+      content: "✧ Transfigured";
+      display: inline-block;
+      margin-left: 8px;
+      color: #e8b6ff;
+      font-size: .74rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .item-tags {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin: 8px 0 10px;
+    }
+
+    .item-tag {
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: .72rem;
+      font-weight: 900;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.28);
+    }
+
+    .item-tag.transfigured {
+      color: #e8b6ff;
+      border-color: rgba(212,154,255,.4);
     }
 
     .link-card {
@@ -467,75 +515,75 @@
       ],
       gear: [
         {
-          slot: "Helm", rarity: "mythic", name: "Heir of Perdition", type: "Ancestral Mythic Unique Helm",
+          slot: "Helm", rarity: "mythic", transfigured: true, name: "Heir of Perdition", type: "Ancestral Mythic Unique Helm",
           power: "900 Item Power", quality: "25 (+25)", armor: "2,004 Armor",
           stats: [{ text: "+21.0% Critical Strike Chance", ga: true }, "+25.0% Lucky Hit Chance", "+25% Movement Speed", "+3 to Core Skills", "10.5% Physical Damage", { text: "+7 Maximum Resolve Stacks", ga: true }, "+150 Strength gem", "+150 Strength gem"],
           aspect: "Succumb to hatred and earn Mother's Favor, increasing damage dealt by 80%. Slaughter enemies to briefly steal Mother's Favor from surrounding allies."
         },
         {
-          slot: "Chest", rarity: "legendary", name: "Thalassic Cuirass of Glynn's Anvil", type: "Ancestral Legendary Chest Armor",
+          slot: "Chest", rarity: "legendary", transfigured: true, name: "Thalassic Cuirass of Glynn's Anvil", type: "Ancestral Legendary Chest Armor",
           power: "900 Item Power", quality: "37 (+25)", armor: "3,506 Armor",
-          stats: ["+163 Strength", { text: "+42 Maximum Resource", ga: true }, "+531 Resistance to All Elements", "+3 to Defensive Skills", "+210 Strength", "+12 Item Quality", { text: "+8 Maximum Resolve Stacks", ga: true }],
+          stats: ["+163 Strength", { text: "+42 Maximum Resource", ga: true }, "+531 Resistance to All Elements", "+3 to Defensive Skills", { text: "+210 Strength", transfigured: true }, { text: "+12 Item Quality", transfigured: true }, { text: "+8 Maximum Resolve Stacks", ga: true }],
           aspect: "Your maximum Resolve is increased by 2 and you gain 4% Damage Reduction per Resolve.",
           bonus: "CirOhm: Lethargic Call to Arms — Cast 5 skills then become exhausted for 3 seconds. Invoke Barbarian's War Cry skill."
         },
         {
-          slot: "Two-Handed Bludgeoning", rarity: "legendary", name: "Tidal Nettle Mace", type: "Ancestral Legendary Two-Handed Mace",
+          slot: "Two-Handed Bludgeoning", rarity: "legendary", transfigured: true, name: "Tidal Nettle Mace", type: "Ancestral Legendary Two-Handed Mace",
           power: "900 Item Power", quality: "25 (+25)", damage: "4,745 DPS",
           stats: [{ text: "+667 Weapon Damage", ga: true }, "+435 Strength", { text: "x75% Critical Strike Damage Multiplier", ga: true }, "x25% Physical Damage Multiplier", "220.0% Gem Strength in this Item", { text: "+7.5% Critical Strike Chance", ga: true }, "x102% Physical Damage Multiplier gem", "x102% Physical Damage Multiplier gem"],
           aspect: "Your Maximum Overpower is increased by 8 while you are Fortified."
         },
         {
-          slot: "Two-Handed Slashing", rarity: "legendary", name: "Demonblade of Limitless Rage", type: "Ancestral Legendary Two-Handed Sword",
+          slot: "Two-Handed Slashing", rarity: "legendary", transfigured: true, name: "Demonblade of Limitless Rage", type: "Ancestral Legendary Two-Handed Sword",
           power: "900 Item Power", quality: "55 (+25)", damage: "4,145 DPS",
           stats: ["+468 Strength", { text: "x115% Critical Strike Damage Multiplier", ga: true }, "x31% Physical Damage Multiplier", "Lucky Hit: Restore +12 Primary Resource", "303.8% Gem Strength in this Item", "+30 Item Quality", { text: "+9.0% Critical Strike Chance", ga: true }, "x129% Physical Damage Multiplier gem", "x129% Physical Damage Multiplier gem"],
           aspect: "Each point of Fury you generate increases your damage by 3.00%. This bonus is lost after 4 seconds."
         },
         {
-          slot: "One-Hand Sword", rarity: "unique", name: "Ramaladni's Magnum Opus", type: "Ancestral Unique Sword",
+          slot: "One-Hand Sword", rarity: "unique", transfigured: true, name: "Ramaladni's Magnum Opus", type: "Ancestral Unique Sword",
           power: "900 Item Power", quality: "25 (+25)", damage: "2,330 DPS",
           stats: [{ text: "+235 Weapon Damage", ga: true }, "+214 Strength", "+375 Life on Kill", "x44% Critical Strike Damage Multiplier", "+5.0% Critical Strike Chance", { text: "+15.0% Damage Per Overpower Stack", ga: true }, "x32% Physical Damage Multiplier gem"],
           aspect: "Skills deal 0.50% increased damage per point of Fury you have, but 10 Fury drains per second."
         },
         {
-          slot: "One-Hand Mace", rarity: "legendary", name: "Askari Mace of Channeling", type: "Ancestral Legendary Mace",
+          slot: "One-Hand Mace", rarity: "legendary", transfigured: true, name: "Askari Mace of Channeling", type: "Ancestral Legendary Mace",
           power: "900 Item Power", quality: "25 (+25)", damage: "2,072 DPS",
           stats: [{ text: "+270 Strength", ga: true }, "+750 Life On Hit", "x11% All Damage Multiplier", "x50% Critical Strike Damage Multiplier", "101.3% Gem Strength in this Item", { text: "+15.0% Damage Per Overpower Stack", ga: true }, "x64% Physical Damage Multiplier gem"],
           aspect: "While channeling a Skill, all damage is increased by 70%."
         },
         {
-          slot: "Gloves", rarity: "unique", name: "Gohr's Devastating Grips", type: "Ancestral Unique Gloves",
+          slot: "Gloves", rarity: "unique", transfigured: true, name: "Gohr's Devastating Grips", type: "Ancestral Unique Gloves",
           power: "900 Item Power", quality: "25 (+25)", armor: "1,001 Armor",
           stats: ["+216 Strength", { text: "x30% All Damage Multiplier", ga: true }, "x47% Vulnerable Damage Multiplier", "x54% Critical Strike Damage Multiplier", { text: "+15.0% Damage Per Overpower Stack", ga: true }],
           aspect: "Whirlwind deals 90% increased damage and pulls enemies to you every 2 seconds."
         },
         {
-          slot: "Pants", rarity: "unique", name: "Tibault's Will", type: "Ancestral Unique Pants",
+          slot: "Pants", rarity: "unique", transfigured: true, name: "Tibault's Will", type: "Ancestral Unique Pants",
           power: "900 Item Power", quality: "25 (+25)", armor: "2,505 Armor",
           stats: ["+130 Strength", { text: "+6 Fury Regeneration", ga: true }, { text: "+3,675 Armor", ga: true }, "+713 Cold Resistance", "+12.3% Resistance to All Elements", { text: "+12 Maximum Resolve Stacks", ga: true }],
           aspect: "You deal 20% increased damage and gain 50 Primary Resource Regeneration while Unstoppable and for 5 seconds after.",
           bonus: "IgniCeh: Bomber Alpha Canid — stores Offering and summons a Spirit Wolf Companion."
         },
         {
-          slot: "Boots", rarity: "legendary", name: "Runic Cleats of Dominance", type: "Ancestral Legendary Boots",
+          slot: "Boots", rarity: "legendary", transfigured: true, name: "Runic Cleats of Dominance", type: "Ancestral Legendary Boots",
           power: "900 Item Power", quality: "25 (+25)", armor: "1,001 Armor",
           stats: [{ text: "+182 Strength", ga: true }, { text: "+6 Fury Regeneration", ga: true }, { text: "+945 Physical Resistance", ga: true }, "+6 to War Cry", { text: "+38% Movement Speed", ga: true }],
           aspect: "Crowd Controlling an enemy grants 2 Resolve."
         },
         {
-          slot: "Ring", rarity: "mythic", name: "Ring of Starless Skies", type: "Ancestral Mythic Unique Ring",
+          slot: "Ring", rarity: "mythic", transfigured: true, name: "Ring of Starless Skies", type: "Ancestral Mythic Unique Ring",
           power: "900 Item Power", quality: "25 (+25)", resist: "216 All Resist",
           stats: [{ text: "+22.5% Attack Speed", ga: true }, { text: "+21.0% Critical Strike Chance", ga: true }, "+15.6% Lucky Hit Chance", "+3 to Core Skills", "+4 to All Skills", { text: "+15.0% Damage Per Overpower Stack", ga: true }, "+3,500 Fire Resistance gem"],
           aspect: "Spending your Primary Resource reduces Resource cost and increases damage by 10% for 3 seconds, up to 50%."
         },
         {
-          slot: "Ring", rarity: "legendary", name: "Crushing Circle", type: "Ancestral Legendary Ring",
+          slot: "Ring", rarity: "legendary", transfigured: true, name: "Crushing Circle", type: "Ancestral Legendary Ring",
           power: "900 Item Power", quality: "25 (+25)", resist: "216 All Resist",
           stats: [{ text: "x15% All Damage Multiplier", ga: true }, { text: "+7.5% Critical Strike Chance", ga: true }, "x31% Critical Strike Damage Multiplier", "x28% Vulnerable Damage Multiplier", { text: "9.0% Cooldown Reduction", ga: true }, "+4,375 Physical Resistance gem"],
           aspect: "While Fortified, you deal 65% increased damage."
         },
         {
-          slot: "Amulet", rarity: "mythic", name: "Melted Heart of Selig", type: "Ancestral Mythic Unique Amulet",
+          slot: "Amulet", rarity: "mythic", transfigured: true, name: "Melted Heart of Selig", type: "Ancestral Mythic Unique Amulet",
           power: "900 Item Power", quality: "25 (+25)", resist: "288 All Resist",
           stats: [{ text: "+21.0% All Stats", ga: true }, "+18.8% Lucky Hit Chance", "+31% Movement Speed", "25.0% Resource Generation", "+107 All Stats", { text: "+7 Maximum Resolve Stacks", ga: true }, "+3,500 Lightning Resistance gem"],
           aspect: "Damage is dealt to your Primary Resource before Life and damage taken this way is drastically reduced. Primary Resource is doubled but Maximum Life is reduced by 75%. While above 50 Primary Resource, deal 29.3% increased damage and gain Berserking, but lose 3 Primary Resource Regeneration."
@@ -640,9 +688,11 @@
             </div>
           </div>
           <div class="badge-row">${meta.map(m => `<span class="badge">${m}</span>`).join('')}</div>
+          ${item.transfigured ? `<div class="item-tags"><span class="item-tag transfigured">Transfigured Item</span></div>` : ''}
           <ul>${(item.stats || []).map(s => {
-            const stat = typeof s === 'string' ? { text: s, ga: false } : s;
-            return `<li class="${stat.ga ? 'ga' : ''}">${stat.text}</li>`;
+            const stat = typeof s === 'string' ? { text: s, ga: false, transfigured: false } : s;
+            const classes = [stat.ga ? 'ga' : '', stat.transfigured ? 'tf' : ''].filter(Boolean).join(' ');
+            return `<li class="${classes}">${stat.text}</li>`;
           }).join('')}</ul>
           ${item.aspect ? `<p class="aspect"><strong>Power:</strong> ${item.aspect}</p>` : ''}
           ${item.effect ? `<p class="aspect"><strong>Effect:</strong> ${item.effect}</p>` : ''}
@@ -705,7 +755,7 @@
     function renderTemplate() {
       const template = {
         title: "Your Build Name",
-        gear: [{ slot: "Helm", rarity: "legendary | unique | mythic | set", name: "Item Name", type: "Item Type", stats: ["Normal Stat", { text: "Greater Affix Stat", ga: true }], aspect: "Power text" }],
+        gear: [{ slot: "Helm", rarity: "legendary | unique | mythic | set", name: "Item Name", type: "Item Type", stats: ["Normal Stat", { text: "Greater Affix Stat", ga: true }, { text: "Explicit transfigured stat", transfigured: true }], aspect: "Power text" }],
         paragon: [{ node: "Legendary Node Name", glyph: "Glyph Name", glyphLevel: 100, confirmed: true, note: "Optional pairing notes" }],
         charms: [{ rarity: "unique", name: "Charm Name", type: "Charm Type", stats: ["Stat 1"], effect: "Effect text" }],
         unknowns: ["Anything not visible in screenshots"]
