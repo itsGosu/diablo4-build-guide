@@ -136,8 +136,27 @@
       pointer-events: none;
     }
 
-    .card.mythic { border-color: rgba(212,154,255,.48); }
-    .card.set { border-color: rgba(101,240,90,.45); }
+    .card.mythic {
+      border-color: rgba(212,154,255,.68);
+      background: linear-gradient(180deg, rgba(50, 26, 60, .92), rgba(20, 12, 24, .98));
+      box-shadow: 0 0 22px rgba(212,154,255,.18), 0 14px 34px var(--shadow);
+    }
+
+    .card.unique {
+      border-color: rgba(255,138,31,.68);
+      background: linear-gradient(180deg, rgba(61, 33, 15, .92), rgba(24, 14, 10, .98));
+      box-shadow: 0 0 18px rgba(255,138,31,.14), 0 14px 34px var(--shadow);
+    }
+
+    .card.legendary {
+      border-color: rgba(217,155,53,.42);
+    }
+
+    .card.set {
+      border-color: rgba(101,240,90,.55);
+      background: linear-gradient(180deg, rgba(21, 46, 18, .92), rgba(11, 22, 10, .98));
+      box-shadow: 0 0 18px rgba(101,240,90,.12), 0 14px 34px var(--shadow);
+    }
 
     .item-head {
       display: flex;
@@ -162,7 +181,43 @@
     }
 
     .mythic .name { color: var(--purple); }
+    .unique .name { color: var(--orange); }
+    .legendary .name { color: var(--gold); }
     .set .name { color: var(--green); }
+
+    .rarity-banner {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.34);
+    }
+
+    .rarity-banner.mythic {
+      color: #f0c7ff;
+      border-color: rgba(212,154,255,.45);
+    }
+
+    .rarity-banner.unique {
+      color: #ffb15c;
+      border-color: rgba(255,138,31,.45);
+    }
+
+    .rarity-banner.legendary {
+      color: #f3c76f;
+      border-color: rgba(217,155,53,.35);
+    }
+
+    .rarity-banner.set {
+      color: #93ff8b;
+      border-color: rgba(101,240,90,.35);
+    }
 
     .badge-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0; }
     .badge {
@@ -381,7 +436,7 @@
           <h2>Make This Tool Reusable</h2>
           <p class="note">For other builds, duplicate this HTML file and replace the JSON data below. The UI updates automatically from the data arrays.</p>
           <ul>
-            <li>Add gear as objects with <strong>slot</strong>, <strong>name</strong>, <strong>type</strong>, <strong>stats</strong>, and <strong>aspect</strong>.</li>
+            <li>Add gear as objects with <strong>slot</strong>, <strong>rarity</strong>, <strong>name</strong>, <strong>type</strong>, <strong>stats</strong>, and <strong>aspect</strong>.</li>
             <li>Mark Greater Affixes with <code>{ text: "Stat name", ga: true }</code> so the UI highlights them automatically.</li>
             <li>Use <strong>unknown</strong> fields instead of guessing.</li>
             <li>Keep screenshots in a folder and add image paths later if desired.</li>
@@ -570,13 +625,14 @@
     }
 
     function cardClass(rarity) {
-      return `card ${rarity === 'mythic' ? 'mythic' : rarity === 'set' ? 'set' : ''}`;
+      return `card ${rarity || 'legendary'}`;
     }
 
     function renderItem(item) {
       const meta = [item.type, item.power, item.quality ? `Quality ${item.quality}` : '', item.armor, item.damage, item.resist].filter(Boolean);
       return `
         <article class="${cardClass(item.rarity)} searchable" data-slot="${item.slot || ''}">
+          <div class="rarity-banner ${item.rarity || 'legendary'}">${item.rarity || 'legendary'}</div>
           <div class="item-head">
             <div>
               <div class="slot">${item.slot || item.type}</div>
